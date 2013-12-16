@@ -20,35 +20,8 @@ and open the template in the editor.
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <title>Index</title>
-        <script>
-            var getAllSymbolsAutoComplete = function() {
-                $.each(Igitur.LogicalConnective.GetAllSymbols(), function(key, val) {
-                    var symbolsAutoComplete = new Array();
-                    symbolsAutoComplete.push({label: val.symbol, value: val.id});
-                    getAllSymbolsAutoComplete = symbolsAutoComplete;
-                    return symbolsAutoComplete;
-                });
-            };
-            $(function() {
-                $("#symbolsAC").autocomplete({
-                    source: getAllSymbolsAutoComplete()
-                });
-                $("#symbolsAC").autocomplete("enable");
-            });
-        </script>
+    
     </head>
-    <body>
-        <?php
-        // put your code here
-        include('LogicalConnective.php');
-        $array = LogicalConnectiveSymbol::GET_SYMBOLS();
-        foreach ($array as $value) {
-            echo $value->symbol . "&nbsp";
-        }
-        ?>
-        <div class="ui-widget">
-            <label for="symbolsAC">Symbols: </label>
-            <input id="symbolsAC" />
-        </div>
+    <body> 
     </body>
 </html>
