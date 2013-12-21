@@ -1,4 +1,9 @@
+
 <?php
+// p: proposition
+// d: definition
+// s: statement
+
 
 if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
     if ($post) {
@@ -26,7 +31,7 @@ class Proposition {
 
     var $id, $p, $q, $connective;
 
-    public static function INSERT_PROPOSITION() {
+    public static function INSERT_PROPOSITION($phrase) {
         $db = (new DbController())->doConnect();
         $sql = "INSERT INTO `Igitur`.`LogicalConnectivePhrase` ( `logicalConnectivePhrase`) VALUES ('$phrase');";
         $db->query($sql);
@@ -39,4 +44,5 @@ class Proposition {
         $this->q = $q;
         $this->connective = $connective;
     }
+
 }

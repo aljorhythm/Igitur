@@ -1,6 +1,7 @@
 var Igitur = {};
 Igitur.Util = {};
 Igitur.Util.LOGICAL_CONNECTIVE_URL = "LogicalConnective.php";
+Igitur.Util.PROPOSITION_URL = "Proposition.php";
 Igitur.Util.GET_AJAX_JSON = function(url, callback) {
     var ret;
     var async = false;
@@ -23,7 +24,6 @@ Igitur.Util.GET_AJAX_JSON = function(url, callback) {
 
 Igitur.LogicalConnective = {};
 
-
 Igitur.LogicalConnective.AddCategory = function(categoryName) {
     var url = Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=category_add&category_name=" + categoryName;
     return Igitur.Util.GET_AJAX_JSON(url);
@@ -36,7 +36,6 @@ Igitur.LogicalConnective.GetAllCategories = function() {
     var categories = Igitur.Util.GET_AJAX_JSON(Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=category_all");
     return categories;
 };
-
 Igitur.LogicalConnective.AddPhrase = function(phrase) {
     var url = Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=phrase_add&phrase=" + phrase;
     return Igitur.Util.GET_AJAX_JSON(url);
@@ -56,7 +55,6 @@ Igitur.LogicalConnective.RemovePhraseFromCategory = function(categoryId, phraseI
 Igitur.LogicalConnective.GetPhrasesFromCategory = function(categoryId) {
     return Igitur.Util.GET_AJAX_JSON(Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=category_phrases&category_id=" + categoryId);
 };
-
 Igitur.LogicalConnective.GetAllSymbols = function(excludeCategoryId) {
     if (typeof excludeCategoryId === "undefined")
         excludeCategoryId = 0;
@@ -71,3 +69,13 @@ Igitur.LogicalConnective.RemoveSymbolFromCategory = function(categoryId, symbolI
 Igitur.LogicalConnective.GetSymbolsFromCategory = function(categoryId) {
     return Igitur.Util.GET_AJAX_JSON(Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=category_symbols&category_id=" + categoryId);
 };
+
+Igitur.Proposition = {};
+
+Igitur.Proposition.GetProposition = function(propositionId){
+     return Igitur.Util.GET_AJAX_JSON(Igitur.Util.PROPOSITION_URL + "?type=json&request=category_symbols&category_id=" + categoryId);
+};
+Igitur.Proposition.GetProposition = function(propositionId){
+     return Igitur.Util.GET_AJAX_JSON(Igitur.Util.LOGICAL_CONNECTIVE_URL + "?type=json&request=category_symbols&category_id=" + categoryId);
+};
+

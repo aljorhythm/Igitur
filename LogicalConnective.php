@@ -94,7 +94,6 @@ class LogicalConnectiveCategory {
         $this->id = $id;
         $this->category = $category;
     }
-
     public static function GET_ALL_CATEGORIES() {
         $db = (new DbController())->doConnect();
         $sql = "Select * from LogicalConnectiveCategory ORDER BY idLogicalConnectiveCategory";
