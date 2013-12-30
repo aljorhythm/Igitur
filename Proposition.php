@@ -1,5 +1,6 @@
 
 <?php
+
 // p: proposition
 // d: definition
 // s: statement
@@ -21,7 +22,10 @@ if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_
                 $excludeCategoryId = filter_input($input, 'exclude_category', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectiveSymbol::GET_SYMBOLS($excludeCategoryId));
                 break;
-
+            case "proposition_get":
+                $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
+                echo json_encode(Proposition::GET_PROPOSITION($propositionId));
+                break;
             default: echo "error";
         }
     }
@@ -43,6 +47,10 @@ class Proposition {
         $this->p = $p;
         $this->q = $q;
         $this->connective = $connective;
+    }
+
+    public static function GET_PROPOSITION($propositionId) {
+        
     }
 
 }

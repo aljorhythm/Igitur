@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script>
+            var Person = function(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            ;
+            Person.birthyear = function(person) {
+                return 2013 - person.age;
+            };
+            window.onload = function() {
+                var joel = new Person("joel", 20);
+                console.log(joel);
+                console.log(joel.name);
+                console.log(Person.birthyear(joel));
+                console.log(typeof (joel));
+                console.log(joel instanceof Person);
+
+                console.log(joel.constructor.toString());
+                console.log(Object.prototype.toString.call(joel));
+            };
+
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
+</html>

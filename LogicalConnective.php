@@ -1,5 +1,7 @@
 <?php
 
+use LogicalConnectiveCategory;
+
 include_once('DB.php');
 
 
@@ -50,6 +52,10 @@ if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_
                 $categoryId = filter_input($input, 'category_id', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectiveCategory::GET_SYMBOLS($categoryId));
                 break;
+            case "category_get":
+                $categoryId = filter_input($input, 'category_id', FILTER_SANITIZE_STRING);
+                echo json_encode(LogicalConnectiveCategory::GET_CATEGORY($categoryId));
+                break;
 
             case "phrase_add":
                 $phrase = filter_input($input, 'phrase', FILTER_SANITIZE_STRING);
@@ -94,6 +100,7 @@ class LogicalConnectiveCategory {
         $this->id = $id;
         $this->category = $category;
     }
+
     public static function GET_ALL_CATEGORIES() {
         $db = (new DbController())->doConnect();
         $sql = "Select * from LogicalConnectiveCategory ORDER BY idLogicalConnectiveCategory";
@@ -223,6 +230,21 @@ SQL;
         return $db->affected_rows;
     }
 
+    public static function GET_CATEGORY($categoryId) {
+        $db = (new DbController())->doConnect();
+        $sql = <<<SQL
+                SELECT `LogicalConnectiveCategory`.`idLogicalConnectiveCategory`,
+        `LogicalConnectiveCategory`.`logicalConnectiveCategoryName`
+        FROM `Igitur` . `LogicalConnectiveCategory` WHERE `LogicalConnectiveCategory`.`idLogicalConnectiveCategory`=$categoryId;
+SQL;
+        if (!!$result = $db->query($sql)) {
+            if (($row = $result->fetch_assoc())) {
+                return new LogicalConnectiveCategory($row['idLogicalConnectiveCategory'], $row['logicalConnectiveCategoryName']);
+            }
+        }
+        return null;
+    }
+
 }
 
 class LogicalConnectiveSymbol {
@@ -236,7 +258,7 @@ class LogicalConnectiveSymbol {
 
     public static function GET_SYMBOLS($excludeCategoryId) {
         $db = (new DbController())->doConnect();
-        if (is_null($excludeCategoryId)) { 
+        if (is_null($excludeCategoryId)) {
             $sql = "Select * from LogicalConnectiveSymbol ORDER BY idLogicalConnectiveSymbol";
         } else {
             $sql = <<<SQL
@@ -256,7 +278,7 @@ order by s.idLogicalConnectiveSymbol;
 SQL;
         }
         mysqli_set_charset($db, "utf8");
-        if (!!$result = $db->query($sql)) { 
+        if (!!$result = $db->query($sql)) {
             $array = array();
             while ($row = $result->fetch_assoc()) {
                 $add = new LogicalConnectiveSymbol($row['idLogicalConnectiveSymbol'], $row['logicalConnectiveSymbol']);

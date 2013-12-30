@@ -19,7 +19,7 @@ and open the template in the editor.
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>  
-        <script src="igitur.js" ></script> 
+        <script src="./igitur.js" ></script> 
         <title>Manage Logical Connectives</title>
         <style>
             #categoryPhrasesCB{ 
@@ -123,7 +123,7 @@ and open the template in the editor.
                 var phrase = $(element).html();
                 var categoryId = UI.categoriesCB("option:selected").val();
                 var category = UI.categoriesCB("option:selected").text();
-                var r = true;//= confirm("Add '" + phrase + "' to category " + category);
+                var r = confirm("Add '" + phrase + "' to category " + category);
                 if (r === true)
                 {
                     Igitur.LogicalConnective.AddPhraseToCategory(categoryId, phraseId);
@@ -141,7 +141,7 @@ and open the template in the editor.
                 var symbol = UI.restSymbolsCB("option:selected").val();
                 var categoryId = UI.categoriesCB("option:selected").val();
                 var category = UI.categoriesCB("option:selected").text();
-                var r = true;//= confirm("Add '" + symbol + "' to category " + category);
+                var r = confirm("Add '" + symbol + "' to category " + category);
                 if (r === true)
                 {
                     Igitur.LogicalConnective.AddSymbolToCategory(categoryId, symbolId);
