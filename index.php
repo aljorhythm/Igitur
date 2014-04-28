@@ -31,6 +31,12 @@ and open the template in the editor.
     <body> 
 
 
+        <?php
+        echo phpversion();
+        echo filter_input(INPUT_SERVER, 'REQUEST_METHOD');
+        echo $_SERVER['REQUEST_METHOD'];
 
+        ?> 
+        ?>
     </body>
 </html>
