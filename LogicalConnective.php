@@ -1,9 +1,6 @@
 <?php
 
-use LogicalConnectiveCategory;
-
 include_once('DB.php');
-
 
 if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
     if ($post) {
@@ -55,8 +52,7 @@ if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_
             case "category_get":
                 $categoryId = filter_input($input, 'category_id', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectiveCategory::GET_CATEGORY($categoryId));
-                break;
-
+                break; 
             case "phrase_add":
                 $phrase = filter_input($input, 'phrase', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectivePhrase::INSERT_PHRASE($phrase));
@@ -65,8 +61,7 @@ if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_
                 $searchTerm = filter_input($input, 'search_term', FILTER_SANITIZE_STRING);
                 $excludeCategoryId = filter_input($input, 'exclude_category', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectivePhrase::SEARCH_PHRASES($searchTerm, $excludeCategoryId));
-                break;
-
+                break;  
             case "symbol_get":
                 $excludeCategoryId = filter_input($input, 'exclude_category', FILTER_SANITIZE_STRING);
                 echo json_encode(LogicalConnectiveSymbol::GET_SYMBOLS($excludeCategoryId));
