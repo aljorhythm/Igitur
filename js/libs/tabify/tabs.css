@@ -1,0 +1,36 @@
+.tabify>ul li{
+    float:left;
+    display:table;
+    text-align:center;
+    width:4em;
+    height:4em;
+    background:#2D9B27;
+}
+.tabify>ul li a{
+    text-decoration: none;
+    vertical-align:middle;
+    display:table-cell
+}
+.tabify>ul li:hover{ 
+    color: #FE7276; 
+    cursor:pointer;
+}
+.tabify>ul li.active{
+    background:#0ACF00;
+}
+.tabify >div{
+    clear:both;
+    padding:5px;
+    background:#0ACF00;
+} 
+.tabify > div > div{
+    display:none;
+}
+.tabify > div > div.active{
+    display: block;
+}
+/* 
+http://colorschemedesigner.com/#2O21Tw0w0w0w0
+#6EE768 #42E73A  #0ACF00 #2D9B27	#078600		
+#FD0006	#BE2F33	#A40004	#FE3F44	#FE7276
+*/

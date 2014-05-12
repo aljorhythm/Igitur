@@ -1,0 +1,70 @@
+@font-face
+{
+    font-family: main-font;
+    src: url('fonts/Cardo/Cardo-Regular.ttf');
+}
+@font-face
+{
+    font-family: old-london;
+    src: url(fonts/old_london/OldLondon.ttf);
+    src: url('fonts/old_london/Olondon_.otf') format('opentype'),
+        url('fonts/old_london/OldLondonAlternate.ttf') format('truetype')
+}
+html{ 
+    font-family: main-font;
+    background:#F0FFFF;
+}
+h1,.h1{ font-size:4em;}h2,.h2{font-size:3.5em;}h3,.h3{font-size:3em;}h4,.h4{font-size:2em;}h5,.h5{font-size:1em;}h6,.h6{font-size:0.5em;}
+a{
+    text-decoration:none;
+}
+#main-container > *{
+    margin-top: 20px;
+}
+#main-container a{
+    color:#FD0006;
+}
+#main-container a:hover{
+    color:#FE7276;
+}
+.upperCaseOnHover:hover{
+    text-transform: uppercase;  
+}
+#main-container{
+    margin-left:15vw;
+    padding:20px; 
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.border-box{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#igitur-logo{
+    font-weight:bold; 
+    font-size:2em;
+    font-family:old-london
+}
+form input{
+    font-family: main-font;
+}
+form input[type=submit],form input[type=button]{
+    border: 0;
+    background: none;
+    color: #FD0006
+}
+form input[type=submit]:hover,form input[type=button]:hover{
+    color: #FE7276;
+    cursor: pointer;
+}
+textarea{
+    font-family: main-font;
+}
+/* 
+http://colorschemedesigner.com/#3h21T----CMh9
+#00FFF5	37B0AB	00908B	22FFF7	3DFFF8
+Complementary Color:
+FF7100	B06C37	904000	FF8422	FF933D 
+*/

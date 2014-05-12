@@ -1,0 +1,30 @@
+#side-nav{ 
+    position:fixed;
+    height:100vh;
+    width:15vw;
+    background:#DCFFFF;
+    padding-top:20px; 
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#side-nav   a{
+    color:#FD0006;
+}
+#side-nav a:hover{
+    color:#FE7276; 
+}
+#side-nav .fullWidthMiddle{
+    width: 100%;
+    text-align:center;
+}
+#side-nav div{
+    margin-top:2vh;
+}
+#side-nav-nav{
+    width:100%;
+}
+#side-nav-nav ul > li {
+    margin-top:3px;
+    padding-left:15px;
+}

@@ -48,8 +48,9 @@ class UAC {
         if ($ret !== false) {
             $user = array("userId" => $ret['idUsers'], "username" => $ret['username']);
             $_SESSION['user'] = $user;
+            return true;
         }
-        return true;
+        return false;
     }
 
     static function isValidUser($username, $password) {
@@ -102,18 +103,15 @@ SQL;
 
     static function doesUserExist($username) {
         $db = (new DbController())->doConnect();
-        $sql = "Select * from `Igitur`.`Users` where username = '$username'";
+        $sql = "Select Count(*) as c from `Igitur`.`Users` where username = '$username'";
         $result = $db->query($sql);
         if ($result !== false) {
             $row = $result->fetch_assoc();
-            if ($row !== null) {
+            if ($row['c'] === '1') {
                 return true;
             }
-        } return false;
-    }
-
-    static function setUserProperty($property) {
-        
+        }
+        return false;
     }
 
 }

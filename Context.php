@@ -26,6 +26,14 @@ if (URI::QUERY_ANY('class') === 'context') {
             $userId = URI::QUERY_ANY('userId', UAC::getUserId());
             echo json_encode(Context::GetUserContexts($userId));
             break;
+        case 'setDescription':
+            if (UAC::isLoggedIn()) {
+                $description = URI::QUERY_ANY("description");
+                $contextId = URI::QUERY_ANY("contextId");
+                $userId = UAC::getUserId();
+                echo json_encode(Context::SetContextDescription($contextId, $description, $userId));
+            }
+            break;
     }
 }
 
@@ -51,7 +59,6 @@ SQL;
     }
 
     public static function GetUserContexts($userId) {
-        UAC::getUserId();
         $db = (new DbController())->doConnect();
         $sql = "Select * from Context where ownerId = '$userId'";
 
@@ -62,6 +69,28 @@ SQL;
             }
             return $ret;
         }
+    }
+
+    public static function SetContextDescription($contextId, $description, $userId) {
+        $sql = <<<SQL
+                UPDATE `Igitur`.`Context` SET `contextDescription` = '$description'
+                WHERE `idContext` = $contextId AND ownerId = $userId;
+SQL;
+        $db = (new DbController())->doConnect();
+        $db->query($sql);
+        return $sql; // ;
+    }
+
+    public static function GetContext($contextId) {
+        $db = (new DbController())->doConnect();
+        $sql = "Select * from Context where idContext = '$contextId'";
+
+        if (!!$result = $db->query($sql)) {
+            if (($row = $result->fetch_assoc())) {
+                return $row;
+            }
+        }
+        return null;
     }
 
 }

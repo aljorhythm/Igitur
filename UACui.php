@@ -6,7 +6,7 @@
         <script>
             $(function() {
                 $("#createUsername").keyup(function() {
-                    Igitur.Util.GET_AJAX_JSON('UAC.php?request=checkUsername&username=' + this.value, function(data) {
+                    Igitur.Util.GET_AJAX_JSON('UAC.php?class=uac&request=checkUsername&username=' + this.value, function(data) {
                         if (data) {
                             $("#checkUsernameResult").html("Username exists");
                         } else {
