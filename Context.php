@@ -12,25 +12,25 @@ if (URI::QUERY_ANY('class') === 'context') {
     $request = URI::QUERY_ANY('request');
     switch ($request) {
         case 'create':
-            if (UAC::isLoggedIn()) {
+            if (UAC::IsLoggedIn()) {
                 $contextName = URI::QUERY_ANY('contextName');
-                echo json_encode(Context::InsertContext($contextName, UAC::getUserId()));
+                echo json_encode(Context::InsertContext($contextName, UAC::GetUserId()));
             }
             break;
         case 'delete':
-            if (UAC::isLoggedIn()) {
+            if (UAC::IsLoggedIn()) {
                 echo json_encode(Context::DeleteContext($contextName));
             }
             break;
         case 'getAll':
-            $userId = URI::QUERY_ANY('userId', UAC::getUserId());
+            $userId = URI::QUERY_ANY('userId', UAC::GetUserId());
             echo json_encode(Context::GetUserContexts($userId));
             break;
         case 'setDescription':
-            if (UAC::isLoggedIn()) {
+            if (UAC::IsLoggedIn()) {
                 $description = URI::QUERY_ANY("description");
                 $contextId = URI::QUERY_ANY("contextId");
-                $userId = UAC::getUserId();
+                $userId = UAC::GetUserId();
                 echo json_encode(Context::SetContextDescription($contextId, $description, $userId));
             }
             break;

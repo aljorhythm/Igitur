@@ -27,34 +27,39 @@ var ModalLogin = {
             margin: '-100px 0 0 -200px',
             'border-radius': '4px',
             'text-align': 'center',
-            'padding-top': '50px'
+            padding: '10px'
         }).appendTo(modal);
 
         var x = $("<a>").css({
-            position: 'absolute',
-            right: '-10px',
-            top: '-10px',
-            background: 'black',
-            color: 'white',
+            position: 'relative',
+            float: 'right',
+            color: '#666666',
             'border-radius': '5px',
-            width: '20px',
+            'font-size': 'large',
             'text-align': 'center'
-        }).html("x").on({'click': function(e) {
+        }).html("X").on({'click': function(e) {
                 ModalLogin.Hide();
-            }, 'mouseover': function() {
-                $(this).css({
-                    cursor: 'pointer'
-                });
             }
+        }).hover(function() {
+            $(this).css({
+                cursor: 'pointer',
+                color: 'black'
+            });
+        }, function() {
+            $(this).css({
+                cursor: 'default',
+                color: '#666666'
+            });
         }).appendTo(loginBox);
-        loginBox.append('Username: ');
-        var username = $("<input>").attr('id', 'username').appendTo(loginBox);
+        var container = $("<div>").css({clear:'both','margin-top':'10%'}).appendTo(loginBox);
+        container.append('Username: ');
+        ModalLogin.username = $("<input>").attr('id', 'username').appendTo(container);
 
-        loginBox.append('<br>Password: ');
-        var password = $("<input>").attr({'type': 'password', id: 'password'}).appendTo(loginBox);
-        loginBox.append('<br>');
+        container.append('<br>Password: ');
+        ModalLogin.password = $("<input>").attr({'type': 'password', id: 'password'}).appendTo(container);
+        container.append('<br>');
         var submit = $("<button>").html('Login').on('click', function() {
-            Igitur.UAC.Login(username[0].value, password[0].value, function(d) {
+            Igitur.UAC.Login(ModalLogin.username[0].value, ModalLogin.password[0].value, function(d) {
                 if (d === true) {
                     if (typeof success !== 'undefined')
                         success();
@@ -69,7 +74,7 @@ var ModalLogin = {
                     }
                 }
             });
-        }).appendTo(loginBox);
+        }).appendTo(container);
 
         $('body').append(modal);
         ModalLogin.Display = function() {

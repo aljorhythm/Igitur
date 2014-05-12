@@ -1,7 +1,4 @@
-.previewLC:hover{
-    cursor: pointer;
-    color: red;
-}
+ 
 #preview *{
     margin:0;
 }

@@ -14,18 +14,27 @@ html{
     font-family: main-font;
     background:#F0FFFF;
 }
-h1,.h1{ font-size:4em;}h2,.h2{font-size:3.5em;}h3,.h3{font-size:3em;}h4,.h4{font-size:2em;}h5,.h5{font-size:1em;}h6,.h6{font-size:0.5em;}
+.igitur-logo{
+    font-weight:bold; 
+    font-size:2em;
+    font-family:old-london
+}
+a.igitur-logo:hover{
+    color:white !important;
+}
+h1,.h1{ font-size:4em;}h2,.h2{font-size:3.5em;}h3,.h3{font-size:3em;}h4,.h4{font-size:2em;}h5,.h5{font-size:1.5em;}h6,.h6{font-size:1em;}
 a{
     text-decoration:none;
 }
 #main-container > *{
     margin-top: 20px;
 }
-#main-container a{
+#main-container a,.a{
     color:#FD0006;
 }
-#main-container a:hover{
+#main-container a:hover,.a:hover{
     color:#FE7276;
+    cursor:pointer;
 }
 .upperCaseOnHover:hover{
     text-transform: uppercase;  
@@ -41,26 +50,47 @@ a{
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-}
-#igitur-logo{
-    font-weight:bold; 
-    font-size:2em;
-    font-family:old-london
-}
+} 
 form input{
-    font-family: main-font;
+    font-family: main-font; 
+    border-radius: 3px;
 }
-form input[type=submit],form input[type=button]{
-    border: 0;
-    background: none;
+form input[type=text]{
+    border:1px solid #C4ECEC;
+}
+form input[type=submit],form input[type=button]{ 
+    border: 1px solid #F4C6C6 ;
+    background: rgba(244,198,198,0.3);
     color: #FD0006
-}
+} 
 form input[type=submit]:hover,form input[type=button]:hover{
     color: #FE7276;
     cursor: pointer;
+    border: 1px solid #FD0006
 }
 textarea{
     font-family: main-font;
+}
+select{
+    background: #C4ECEC;
+    border-radius: 3px;
+}
+form.search input[type=text]{
+    padding:8px 15px; 
+    border:0;
+    background: #D6E8E8
+}
+form.search input[type=button] {
+    position:relative;
+    padding:6px 15px;
+    left:-8px;
+    border:2px solid #207cca;
+    background-color:#207cca;
+    color:#fafafa;
+}
+form.search input[type=button]:hover  {
+    background-color:#fafafa;
+    color:#207cca;
 }
 /* 
 http://colorschemedesigner.com/#3h21T----CMh9

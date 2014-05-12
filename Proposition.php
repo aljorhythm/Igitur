@@ -3,56 +3,49 @@
 //debugging 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-?>
-<?php
+
 
 include_once('DB.php');
-// p: proposition
-// d: definition
-// s: statement
+include_once('UAC.php');
 
-
-if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
-    if ($post) {
-        $input = INPUT_POST;
-    } else {
-        $input = INPUT_GET;
-    }
-    $type = filter_input($input, 'type', FILTER_SANITIZE_STRING);
-
-    if ($type == 'json' || true) {//dunnid type
-        header('Content-Type: application/json');
-        $request = filter_input($input, 'request', FILTER_SANITIZE_STRING);
-        switch ($request) {
-            case "proposition_add":
+if (URI::QUERY_ANY('class') === 'proposition') {
+    $request = URI::QUERY_ANY('request');
+    switch ($request) {
+        case "proposition_add":
+            if (UAC::IsLoggedIn()) {
                 $p = filter_input($input, 'p', FILTER_SANITIZE_STRING);
                 $q = filter_input($input, 'q', FILTER_SANITIZE_STRING);
                 $logicalConnective = filter_input($input, 'logicalConnective_categoryId', FILTER_SANITIZE_STRING);
-                $contextId = filter_input($input, 'contextId', FILTER_SANITIZE_STRING);
-                echo json_encode(Proposition::INSERT_PROPOSITION($p, $q, $logicalConnective));
-                break;
-            case "proposition_get":
-                $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
-                echo json_encode(Proposition::GET_PROPOSITION($propositionId));
-                break;
-            case "proposition_search":
-                $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
-                echo json_encode(Proposition::GET_PROPOSITION($propositionId));
-                break;
-            default: echo "error";
-        }
+                $contextId = URI::QUERY_ANY('contextId', '');
+                echo json_encode(Proposition::INSERT_PROPOSITION($p, $q, $logicalConnective, UAC::GetUserId(), $contextId));
+            }
+            break;
+        case "proposition_get":
+            $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
+            echo json_encode(Proposition::GET_PROPOSITION($propositionId));
+            break;
+        case "proposition_search":
+            $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
+            echo json_encode(Proposition::GET_PROPOSITION($propositionId));
+            break;
+        default: echo "error";
     }
 }
 
-class Proposition { 
+class Proposition {
 
-    public static function INSERT_PROPOSITION($p, $q, $logicalConnective,$contextId) {
+    public static function INSERT_PROPOSITION($p, $q, $logicalConnective, $ownerId, $contextId) {
         $db = (new DbController())->doConnect();
         $sql = <<<SQL
 INSERT INTO `Igitur`.`Proposition`
-(`idProposition`,`propositionP`,`PropositionQ`,`LogicalConnectiveCategory_idLogicalConnectiveCategory`.`Context_idContext`)
+(`propositionP`,
+`PropositionQ`,
+`LogicalConnectiveCategory_idLogicalConnectiveCategory`,
+`ownerId`,
+`contextId`)
 VALUES
-('$p','$q',$logicalConnective,$contextId);
+( '$p','$q','$logicalConnective','$ownerId','$contextId');
+
 
 SQL;
         $db->query($sql);
@@ -75,8 +68,8 @@ SQL;
         $db = (new DbController())->doConnect();
         $result = $db->query($sql);
         if (($row = mysqli_fetch_array($result)) !== false) {
-            echo $row['idProposition'] . " " . $row['propositionP'] . " " . $row['PropositionQ'] . " " . $row['LogicalConnectiveCategory_idLogicalConnectiveCategory'];
+            return $row;
         }
     }
-            
+
 }

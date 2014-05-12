@@ -6,11 +6,11 @@ ini_set('display_errors', '1');
 ?>
 <?php
 include 'Context.php';
-$editId = URI::QUERY_ANY('id');
+$editId = URI::QUERY_ANY('id', '');
 if ($editId !== '') {
     $context = Context::GetContext($editId);
     if ($context !== null) {
-        $editable = UAC::getUserId() === $context['ownerId'];
+        $editable = UAC::GetUserId() === $context['ownerId'];
     }
 }
 ?> 
@@ -18,8 +18,7 @@ if ($editId !== '') {
 <html>
     <head>
         <?php include 'common/head.php'; ?>
-        <?php include 'common/nav-head.php'; ?> 
-        <link href='context.css' rel='stylesheet' type='text/css'>            
+        <?php include 'common/nav-head.php'; ?>           
         <?php if ($context !== null) { ?>
             <?php if ($editable) { ?> 
                 <script>
@@ -105,20 +104,24 @@ if ($editId !== '') {
             <?php
             if ($context === null) {
                 echo "Context not found";
-            } else {
-                echo json_encode($context);
-                var_dump($context);
-                echo $context['contextName'];
+            } else { 
                 echo "<h3>{$context['contextName']}</h3>";
                 include 'Users.php';
-                $owner = Users::getUsername($context['ownerId']);
-                echo "<h5>by $owner</h5>";
+                $owner = Users::GetUsername($context['ownerId']);
+                echo "<h5>by <a href='profile.php?id={$context['ownerId']}'>$owner</a></h5>";
                 ?>
                 <div id="description">
                     <?php echo "<span class='h4'>Description</span>"; ?>
                     <textarea rows="5" maxlength="400" readonly><?php echo $context['contextDescription']; ?></textarea>  
                     <?php if ($editable) { ?>        <span onclick="UI.Description.Edit()">Edit</span> <?php } ?>
                 </div>    
+                <div id="definitions">
+                    <h4>Definitions</h4>
+                    <form class="search">
+                        <input type="text" placeholder="Search definitions in context..." required>
+                        <input type="button" value="Search">
+                    </form>
+                </div>
             <?php } ?>
         </div>
     </body>

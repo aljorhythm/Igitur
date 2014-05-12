@@ -2,15 +2,16 @@
     position:fixed;
     height:100vh;
     width:15vw;
-    background:#DCFFFF;
+    background:#207cca;
     padding-top:20px; 
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-#side-nav   a{
-    color:#FD0006;
+#side-nav a{
+    color:white;
 }
+
 #side-nav a:hover{
     color:#FE7276; 
 }
@@ -23,6 +24,13 @@
 }
 #side-nav-nav{
     width:100%;
+}
+#side-nav-nav > ul > li > a{
+    color:black;
+    font-size:x-large;
+}
+#side-nav-nav > ul > li > a:hover {
+    color:#666666;
 }
 #side-nav-nav ul > li {
     margin-top:3px;

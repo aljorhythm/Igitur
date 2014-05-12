@@ -6,6 +6,7 @@ ini_set('display_errors', '1');
 
 include_once './DB.php';
 include_once './Utilities.php';
+
 session_start();
 if (URI::QUERY_ANY('class') === 'uac') {
     $request = URI::QUERY_ANY('request');
@@ -27,7 +28,7 @@ if (URI::QUERY_ANY('class') === 'uac') {
 
 class UAC {
 
-    static function isLoggedIn() {
+    static function IsLoggedIn() {
         return isset($_SESSION['user']);
     }
 
@@ -39,7 +40,7 @@ class UAC {
         return isset($_SESSION['user']['username']) ? $_SESSION['user']['username'] : "";
     }
 
-    static function getUserId() {
+    static function GetUserId() {
         return isset($_SESSION['user']['userId']) ? $_SESSION['user']['userId'] : "";
     }
 
