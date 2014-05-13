@@ -37,8 +37,7 @@ if ($editId !== '') {
                                         UI.Description.Edit = realEdit;
                                     };
                                 }
-                                realEdit();
-
+                                realEdit(); 
                             }
 
                         }
@@ -50,13 +49,13 @@ if ($editId !== '') {
                     width:700px; 
                 }
                 <?php if ($editable) { ?> 
-                    #description > textArea:hover + span{ 
+                    #description > textArea:hover ~ span{ 
                         visibility: visible;
                         opacity: 1;
                         -webkit-transition: visibility 1s,opacity 1s;  
                         transition: visibility 1s,opacity 1s; 
                     } 
-                    #description > textArea + span{ 
+                    #description > textArea ~ span{ 
                         display:block; 
                         float:right;
                         visibility:hidden; 

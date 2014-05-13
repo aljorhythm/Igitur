@@ -16,8 +16,9 @@ Igitur.Util = {
             async: async,
             success: function(data) {
                 ret = data;
-                if (callback)
+                if (callback) {
                     callback(data);
+                }
             }
         });
         if (!callback)
@@ -85,16 +86,16 @@ Igitur.LogicalConnective = {
 };
 Igitur.Proposition = {
     GetProposition: function(propositionId, callback) {
-        var proposition = Igitur.Proposition.GetPropositionRaw(propositionId, callback);
-        proposition.prototype = new Igitur.Proposition();
-        return proposition;
-    }, GetPropositionRaw: function(propositionId, callback) {
-        return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_PROPOSITION + "?type=json&request=category_symbols&proposition_id=" + propositionId, callback);
+        return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_PROPOSITION + "?class=proposition&request=proposition_get&propositionId=" + propositionId, callback);
+    }, GetPropositionsUser: function(userId, callback) {
+        return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_PROPOSITION + "?class=proposition&request=proposition_get_user&userId=" + userId, callback);
     }
 };
 Igitur.Context = {
-    GetAll: function(userId, callback) {
-        return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_CONTEXT + "?class=context&request=getAll&userId=" + userId, callback);
+    GetAll: function(userId, rangeX, rangeY, callback) {
+        rangeX = (rangeX) === 0 ? "&rangeX=" + rangeX : "";
+        rangeY = (rangeX) === 0 ? "&rangeY=" + rangeY : "";
+        return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_CONTEXT + "?class=context&request=getAll&userId=" + userId + rangeX + rangeY, callback);
     }, SetDescription: function(contextId, description, callback) {
         return Igitur.Util.POST_AJAX_JSON(Igitur.Util.URL_CONTEXT, {
             'class': 'context',

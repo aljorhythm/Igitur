@@ -20,12 +20,13 @@ ini_set('display_errors', '1');
             $user = Users::GetUser($id);
             echo json_encode($user);
             ?>
-            <h3><?php echo $user['name'];?></h3>
+            <h3 style="margin-bottom:20px;"><?php echo $user['name']; ?></h3>
+            <a class="submit" href="contextUI.php?id=<?php echo $id ?>">Contexts</a>
             <h5>Alias</h5>
             <?php echo $user['username']; ?>
             <h5>Email</h5>
             <h5>www</h5>
-            
+
         </div>
     </body>
 </html>

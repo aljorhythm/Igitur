@@ -11,9 +11,11 @@ ini_set('display_errors', '1');
         <?php include_once 'common/nav-head.php'; ?>    
     </head>
     <body>
-        <?php include_once 'common/nav.php'; ?>
-        <div id='main-container'>  
-       Definitions todo
+        <div id='content'>
+            <?php include_once 'common/nav.php'; ?>
+            <div id='main-container'>  
+                Definitions todo
+            </div> 
         </div>
     </body>
 </html>

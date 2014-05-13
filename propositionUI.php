@@ -10,12 +10,13 @@ ini_set('display_errors', '1');
         <?php include_once 'common/head.php'; ?>
         <?php include_once 'common/nav-head.php'; ?>    
     </head>
-    <body> 
-        <div id='content'>
-            <?php include 'common/nav.php'; ?>
+    <body>
+        <div id='content'>  
+            <?php include_once 'common/nav.php'; ?>
             <div id='main-container'>  
-                Definitions todo
-            </div> 
+                <h3>Proposition</h3>
+
+            </div>  
         </div>
     </body>
 </html>

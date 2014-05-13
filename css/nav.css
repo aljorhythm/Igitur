@@ -8,11 +8,11 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-#side-nav a{
+#side-nav a,#side-nav .a{
     color:white;
 }
 
-#side-nav a:hover{
+#side-nav a:hover,#side-nav .a:hover{
     color:#FE7276; 
 }
 #side-nav .fullWidthMiddle{

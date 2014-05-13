@@ -59,8 +59,9 @@ SQL;
     }
 
     public static function GetUserContexts($userId) {
-        $db = (new DbController())->doConnect();
         $sql = "Select * from Context where ownerId = '$userId'";
+        
+        $db = (new DbController())->doConnect();
 
         if (!!$result = $db->query($sql)) {
             $ret = array();
@@ -73,12 +74,11 @@ SQL;
 
     public static function SetContextDescription($contextId, $description, $userId) {
         $sql = <<<SQL
-                UPDATE `Igitur`.`Context` SET `contextDescription` = '$description'
+                UPDATE `Igitur`.`Context` SET `contextDescription` = SUBSTRING('$description',1,400)
                 WHERE `idContext` = $contextId AND ownerId = $userId;
 SQL;
-        $db = (new DbController())->doConnect();
-        $db->query($sql);
-        return $sql; // ;
+        $db = (new DbController())->doConnect(); 
+        return $db->query($sql);
     }
 
     public static function GetContext($contextId) {

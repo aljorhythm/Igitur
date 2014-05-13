@@ -2,9 +2,7 @@
 
 //debugging 
 error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
-
+ini_set('display_errors', '1'); 
 include_once('DB.php');
 include_once('UAC.php');
 
@@ -13,12 +11,17 @@ if (URI::QUERY_ANY('class') === 'proposition') {
     switch ($request) {
         case "proposition_add":
             if (UAC::IsLoggedIn()) {
-                $p = filter_input($input, 'p', FILTER_SANITIZE_STRING);
-                $q = filter_input($input, 'q', FILTER_SANITIZE_STRING);
-                $logicalConnective = filter_input($input, 'logicalConnective_categoryId', FILTER_SANITIZE_STRING);
-                $contextId = URI::QUERY_ANY('contextId', '');
-                echo json_encode(Proposition::INSERT_PROPOSITION($p, $q, $logicalConnective, UAC::GetUserId(), $contextId));
+                $p = URI::QUERY_POST('p', '');
+                $q = URI::QUERY_POST('q', '');
+                $logicalConnective = URI::QUERY_POST('logicalConnective_categoryId', '');
+                echo json_encode(Proposition::INSERT_PROPOSITION($p, $q, $logicalConnective, UAC::GetUserId()));
             }
+            break;
+        case "proposition_get_user":
+            $userId = URI::QUERY_ANY('userId');
+            $rangeX = URI::QUERY_ANY('rangeX');
+            $rangeY = URI::QUERY_ANY('rangeY');
+            echo json_encode(Proposition::GET_PROPOSITIONS_USER($userId,$rangeX,$rangeY));
             break;
         case "proposition_get":
             $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
@@ -34,22 +37,21 @@ if (URI::QUERY_ANY('class') === 'proposition') {
 
 class Proposition {
 
-    public static function INSERT_PROPOSITION($p, $q, $logicalConnective, $ownerId, $contextId) {
+    public static function INSERT_PROPOSITION($p, $q, $logicalConnective, $ownerId) {
         $db = (new DbController())->doConnect();
         $sql = <<<SQL
 INSERT INTO `Igitur`.`Proposition`
 (`propositionP`,
-`PropositionQ`,
+`propositionQ`,
 `LogicalConnectiveCategory_idLogicalConnectiveCategory`,
-`ownerId`,
-`contextId`)
+`ownerId`)
 VALUES
-( '$p','$q','$logicalConnective','$ownerId','$contextId');
+( '$p','$q','$logicalConnective','$ownerId');
 
 
 SQL;
         $db->query($sql);
-        return mysqli_insert_id($db);
+        return mysqli_insert_id($db) . "here";
     }
 
     public function __construct($id, $p, $q, $connective) {
@@ -70,6 +72,30 @@ SQL;
         if (($row = mysqli_fetch_array($result)) !== false) {
             return $row;
         }
+    }
+
+    public static function GET_PROPOSITIONS_USER($userId, $rangeX = null, $rangeY = null) {
+        $LIMIT = "";
+        if ($rangeX !== null) {
+            $LIMIT = "Limit $rangeX";
+            if ($rangeY !== null) {
+            $LIMIT .= ", $rangeY";    
+            }
+        }
+        $sql = <<<SQL
+            SELECT *
+    FROM Proposition
+    WHERE ownerId = $userId $LIMIT;
+SQL;
+        $db = (new DbController())->doConnect();
+        $result = $db->query($sql);
+        $ret = array();
+        if ($result !== false) {
+            while (( $row = $result->fetch_assoc()) !== null) {
+                array_push($ret, $row);
+            }
+        }
+        return $ret;
     }
 
 }
