@@ -1,48 +1,63 @@
-var Igitur = {};
-Igitur.Util = {
-    URL_LOGICAL_CONNECTIVE: "LogicalConnective.php",
-    URL_PROPOSITION: "Proposition.php",
-    URL_CONTEXT: "Context.php",
-    URL_UAC: "UAC.php",
-    GET_AJAX_JSON: function(url, callback) {
-        var ret;
-        var async = false;
-        if (callback) {
-            async = true;
+var Igitur = {
+    Cache: {
+        logicalConnectives_phrases: [],
+        GetPhrases: function(categoryId, callback) {
+            var logicalConnectives_phrases = Igitur.Cache.logicalConnectives_phrases;
+            if (categoryId in logicalConnectives_phrases) {
+                callback(logicalConnectives_phrases[categoryId]);
+            } else {
+                Igitur.LogicalConnective.GetPhrasesFromCategory(categoryId, function(phrases) {
+                    callback(phrases);
+                    logicalConnectives_phrases[categoryId] = phrases;
+                });
+            }
         }
-        $.ajax({
-            url: url,
-            dataType: 'json',
-            async: async,
-            success: function(data) {
-                ret = data;
-                if (callback) {
-                    callback(data);
+    },
+    Util: {
+        URL_LOGICAL_CONNECTIVE: "LogicalConnective.php",
+        URL_PROPOSITION: "Proposition.php",
+        URL_CONTEXT: "Context.php",
+        URL_UAC: "UAC.php",
+        GET_AJAX_JSON: function(url, callback) {
+            var ret;
+            var async = false;
+            if (callback) {
+                async = true;
+            }
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                async: async,
+                success: function(data) {
+                    ret = data;
+                    if (callback) {
+                        callback(data);
+                    }
                 }
+            });
+            if (!callback)
+                return ret;
+        }, POST_AJAX_JSON: function(url, dataArgs, callback) {
+            var ret;
+            var async = false;
+            if (callback) {
+                async = true;
             }
-        });
-        if (!callback)
-            return ret;
-    }, POST_AJAX_JSON: function(url, dataArgs, callback) {
-        var ret;
-        var async = false;
-        if (callback) {
-            async = true;
+            $.ajax({
+                data: dataArgs,
+                type: 'post',
+                url: url,
+                dataType: 'json',
+                async: async,
+                success: function(data) {
+                    ret = data;
+                    if (callback)
+                        callback(data);
+                }
+            });
+            if (!callback)
+                return ret;
         }
-        $.ajax({
-            data: dataArgs,
-            type: 'post',
-            url: url,
-            dataType: 'json',
-            async: async,
-            success: function(data) {
-                ret = data;
-                if (callback)
-                    callback(data);
-            }
-        });
-        if (!callback)
-            return ret;
     }
 };
 Igitur.LogicalConnective = {

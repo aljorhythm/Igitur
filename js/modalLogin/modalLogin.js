@@ -2,8 +2,12 @@
 var ModalLogin = {
     //default success is refresh
     //default failure is alert
+    Success: function() {
+        location.reload();
+    }, Failure: function() {
+        alert(failed);
+    },
     Display: function(success, failure) {
-        console.log('asd');
         var modal = $("<div>").css({
             height: '100vh',
             width: '100vw',
@@ -51,7 +55,7 @@ var ModalLogin = {
                 color: '#666666'
             });
         }).appendTo(loginBox);
-        var container = $("<div>").css({clear:'both','margin-top':'10%'}).appendTo(loginBox);
+        var container = $("<div>").css({clear: 'both', 'margin-top': '10%'}).appendTo(loginBox);
         container.append('Username: ');
         ModalLogin.username = $("<input>").attr('id', 'username').appendTo(container);
 
@@ -61,17 +65,9 @@ var ModalLogin = {
         var submit = $("<button>").html('Login').on('click', function() {
             Igitur.UAC.Login(ModalLogin.username[0].value, ModalLogin.password[0].value, function(d) {
                 if (d === true) {
-                    if (typeof success !== 'undefined')
-                        success();
-                    else {
-                        location.reload();
-                    }
+                    ModalLogin.Success();
                 } else {
-                    if (typeof failure !== 'undefined')
-                        failure();
-                    else {
-                        alert('credentials not valid');
-                    }
+                    ModalLogin.Failure();
                 }
             });
         }).appendTo(container);
@@ -82,5 +78,11 @@ var ModalLogin = {
         };
         ModalLogin.Hide = function() {
             modal.css('display', 'none');
+        };
+        ModalLogin.JqueryObject = function() {
+            return modal;
+        };
+        ModalLogin.Destroy = function() {
+            modal.remove();
         };
     }};
