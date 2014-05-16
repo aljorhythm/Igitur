@@ -110,6 +110,7 @@ form.search input[type=button] {
 form.search input[type=button]:hover  {
     background-color:#fafafa;
     color:#207cca;
+    cursor:pointer
 }
 /* 
 http://colorschemedesigner.com/#3h21T----CMh9

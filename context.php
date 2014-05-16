@@ -1,5 +1,5 @@
 <?php
-include_once 'UAC.php';
+include_once 'libs/UAC.php';
 //debugging 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -26,12 +26,12 @@ ini_set('display_errors', '1');
                     if ($id === '' || $id === UAC::GetUserId()) {
                         echo 'Your';
                     } else {
-                        include 'Users.php';
+                        include 'libs/Users.php';
                         echo "<a href='profile.php?id=$id'>" . Users::GetUsername($id) . "'s</a>";
                     }
                     ?> Contexts</h2>
                 <div id='contexts'> <?php
-                    include_once 'Context.php';
+                    include_once 'libs/Context.php';
                     $contexts = Context::GetUserContexts($id === '' ? UAC::GetUserId() : $id );
                     foreach ($contexts as $context) {
                         ?>  

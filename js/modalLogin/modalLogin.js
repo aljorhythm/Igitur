@@ -5,9 +5,9 @@ var ModalLogin = {
     Success: function() {
         location.reload();
     }, Failure: function() {
-        alert(failed);
+        alert('failed');
     },
-    Display: function(success, failure) {
+    Display: function(duration, callback) {
         var modal = $("<div>").css({
             height: '100vh',
             width: '100vw',
@@ -42,7 +42,7 @@ var ModalLogin = {
             'font-size': 'large',
             'text-align': 'center'
         }).html("X").on({'click': function(e) {
-                ModalLogin.Hide();
+                ModalLogin.Close();
             }
         }).hover(function() {
             $(this).css({
@@ -71,18 +71,32 @@ var ModalLogin = {
                 }
             });
         }).appendTo(container);
-
-        $('body').append(modal);
-        ModalLogin.Display = function() {
-            modal.css('display', 'block');
+        
+        ModalLogin.Display = function(duration, callback) { 
+            if (typeof (duration) !== 'undefined') { 
+                modal.fadeIn(duration, callback);
+            }
+            else {
+                modal.show();
+            }
         };
-        ModalLogin.Hide = function() {
-            modal.css('display', 'none');
-        };
+        ModalLogin.Hide = function(duration, callback) {
+            if (typeof (duration) !== 'undefined') {
+                modal.fadeOut(duration, callback);
+            }
+            else {
+                modal.hide();
+            }
+        }; 
+        ModalLogin.Hide();
+        $('body').append(modal); 
+        ModalLogin.Display(duration, callback);
         ModalLogin.JqueryObject = function() {
             return modal;
         };
         ModalLogin.Destroy = function() {
-            modal.remove();
+            ModalLogin.Hide(function() {
+                modal.remove();
+            });
         };
     }};

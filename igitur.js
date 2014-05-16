@@ -14,10 +14,10 @@ var Igitur = {
         }
     },
     Util: {
-        URL_LOGICAL_CONNECTIVE: "LogicalConnective.php",
-        URL_PROPOSITION: "Proposition.php",
-        URL_CONTEXT: "Context.php",
-        URL_UAC: "UAC.php",
+        URL_LOGICAL_CONNECTIVE: "libs/LogicalConnective.php",
+        URL_PROPOSITION: "libs/Proposition.php",
+        URL_CONTEXT: "libs/Context.php",
+        URL_UAC: "libs/UAC.php",
         GET_AJAX_JSON: function(url, callback) {
             var ret;
             var async = false;

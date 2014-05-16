@@ -15,13 +15,13 @@ ini_set('display_errors', '1');
         <?php include_once 'common/nav.php'; ?>
         <div id='main-container'>  
             <?php
-            include_once 'Users.php';
+            include_once 'libs/Users.php';
             $id = URI::QUERY_ANY('id');
             $user = Users::GetUser($id);
             echo json_encode($user);
             ?>
             <h3 style="margin-bottom:20px;"><?php echo $user['name']; ?></h3>
-            <a class="submit" href="contextUI.php?id=<?php echo $id ?>">Contexts</a>
+            <a class="submit" href="context.php?id=<?php echo $id ?>">Contexts</a>
             <h5>Alias</h5>
             <?php echo $user['username']; ?>
             <h5>Email</h5>

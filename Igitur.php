@@ -1,5 +1,5 @@
 <?php
-include_once 'UAC.php';
+include_once 'libs/UAC.php';
 //debugging 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -14,7 +14,7 @@ ini_set('display_errors', '1');
         <div id='content'>
             <?php include_once 'common/nav.php'; ?>
             <div id='main-container'>  
-                Definitions todo
+                MAIN PAGE
             </div> 
         </div>
     </body>

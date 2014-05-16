@@ -1,7 +1,7 @@
-<?php include_once 'UAC.php' ?>
+<?php include_once 'libs/UAC.php' ?>
 
 <div id="side-nav">  
-    <div class='fullWidthMiddle'><a class='igitur-logo' onclick='location.reload()'>Igitur</a></div>
+    <div class='fullWidthMiddle'><a class='igitur-logo' href="" onclick='location.reload()'>Igitur</a></div>
     <div id="opatable"> 
         <div id="ui-data" data-loggedin="<?php echo (int) UAC::IsLoggedIn(); ?>"></div>
         <?php
@@ -12,7 +12,7 @@
             <script>
                 function logout() {
                     Igitur.UAC.Logout();
-                    History.replaceState(null, "State", location.href);
+                    History.replaceState({date: Date.now(), uac: true}, "State", location.href);
                 }
             </script>
             <div class="fullWidthMiddle">
@@ -21,13 +21,15 @@
         <?php } else { ?>
             <script src='js/modalLogin/modalLogin.js'></script>
             <script>
+                    ModalLogin.Close = function() {
+                        ModalLogin.Hide(400);
+                    };
                     ModalLogin.Success = function() {
                         ModalLogin.Destroy();
-                        History.replaceState(null, "State", location.href);
+                        History.replaceState({date: Date.now(), uac: true}, "State", location.href);
                     };
                     function login() {
-                        console.log('here');
-                        ModalLogin.Display();
+                        ModalLogin.Display(400);
                     }
             </script>
             <div class="fullWidthMiddle"> <span class="a" href="" title="login" onclick="login();">Login</span></div> 
@@ -35,12 +37,15 @@
         <div id='side-nav-nav' style='width:100%;'>
 
             <ul> 
-                <?php if ($loggedIn) { ?>
+                <?php
+                if ($loggedIn) {
+                    $id = UAC::GetUserId();
+                    ?>
                     <li><a href="profile.php">You</a>
                         <ul>
-                            <li><a href="contextUI.php">Context</a></li> 
-                            <li><a href="definitionsUI.php">Definitions</a></li>  
-                            <li><a href="propositionsUI.php">Propositions</a></li> 
+                            <li><a href="context.php?id=<?php echo $id; ?>">Context</a></li> 
+                            <li><a href="definitions.php?id=<?php echo $id; ?>">Definitions</a></li>  
+                            <li><a href="propositions.php?id=<?php echo $id; ?>">Propositions</a></li> 
                             <li><a href="settings.php">Settings</a></li>
                         </ul>
                     </li>

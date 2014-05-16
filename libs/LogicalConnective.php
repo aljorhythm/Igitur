@@ -1,6 +1,6 @@
 <?php
 
-include_once('DB.php');
+include_once(__DIR__.'/DB.php');
 
 if (($post = filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') || filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
     if ($post) {

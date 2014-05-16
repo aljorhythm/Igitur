@@ -2,8 +2,8 @@
 //debugging 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-include_once 'UAC.php';
-include_once 'Users.php';
+include_once 'libs/UAC.php';
+include_once 'libs/Users.php';
 $userId = URI::QUERY_ANY('id', '');
 $editable = UAC::IsLoggedIn() && ($userId === '' || $userId === UAC::GetUserId());
 if ($userId === '') {
@@ -23,7 +23,8 @@ if ($userId === '') {
         <div id='main-container'>  
             <link href='./propositions.css' rel='stylesheet' type='text/css'>   
             <script src="js/jquery/jquery.form.min.js"></script> 
-            <?php if ($editable) { ?>  <script> 
+            <?php if ($editable) { ?> 
+                <script>
                     UI = {
                         Propositions: {
                         },
@@ -62,8 +63,10 @@ if ($userId === '') {
                                     $("#formAddProposition .previewText").keyup(function() {
                                         $("#formAddProposition #preview" + this.name.toUpperCase()).html(this.value);
                                     });
-                                    $('#formAddProposition').ajaxForm({success: function(data) {
-                                            console.log(data);
+                                    $('#formAddProposition').ajaxForm({success: function() {
+                                            $("#propositions").fadeOut({complete: function() {
+                                                    $(this).load(location.href + ' #propositions').fadeIn();
+                                                }});
                                         }});
                                 }
                             }, Init: function() {
@@ -82,7 +85,7 @@ if ($userId === '') {
                     <input type="text" name="p" placeholder="  p" class="previewText"/>
                     <select id="categoryId" name="logicalConnective_categoryId">
                         <?php
-                        include_once './LogicalConnective.php';
+                        include_once 'libs/LogicalConnective.php';
                         $logicalConnectives = LogicalConnectiveCategory::GET_ALL_CATEGORIES();
                         foreach ($logicalConnectives as $connective) {
                             echo "<option value='$connective->id'>{$connective->category}</option>";
@@ -102,7 +105,7 @@ if ($userId === '') {
             <?php } ?>
             <?php
             if (!UAC::IsLoggedIn() && $userId === '') {
-                echo"no user found";
+                echo "Login required";
             } else {
                 ?>      
                 <h4><?php echo $editable ? "Your " : "<a href='profile.php?id=$userId'>" . Users::GetUsername($userId) . "'s</a>"; ?> Propositions</h4>
@@ -110,12 +113,12 @@ if ($userId === '') {
                 <div id="propositions">
                     <table>
                         <?php
-                        include_once 'Proposition.php';
-                        include_once 'LogicalConnective.php';
+                        include_once 'libs/Proposition.php';
+                        include_once 'libs/LogicalConnective.php';
                         $props = Proposition::GET_PROPOSITIONS_USER($userId);
                         foreach ($props as $prop) {
                             $symbol = LogicalConnectiveCategory::GET_SYMBOLS($prop['LogicalConnectiveCategory_idLogicalConnectiveCategory'])[0]['symbol'];
-                            echo "<tr><td><a href='propositionUI.php?id={$prop['idProposition']}'>{$prop['propositionP']} $symbol {$prop['propositionQ']}</a></td></tr>";
+                            echo "<tr><td><a href='proposition.php?id={$prop['idProposition']}'>{$prop['propositionP']} $symbol {$prop['propositionQ']}</a></td></tr>";
                         }
                         ?>
                     </table>

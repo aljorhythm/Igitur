@@ -19,7 +19,7 @@
     </head>
     <body>
         <?php
-        include_once './UAC.php';
+        include_once 'libs/UAC.php';
         echo "Hi ", UAC::getUsername();
         ?>
         <form style="border:1px black solid" target="_blank" action="UAC.php" method="POST">

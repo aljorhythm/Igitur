@@ -2,9 +2,9 @@
 
 //debugging 
 error_reporting(E_ALL);
-ini_set('display_errors', '1'); 
-include_once('DB.php');
-include_once('UAC.php');
+ini_set('display_errors', '1');
+include_once(__DIR__ . '/DB.php');
+include_once(__DIR__ . '/UAC.php');
 
 if (URI::QUERY_ANY('class') === 'proposition') {
     $request = URI::QUERY_ANY('request');
@@ -21,7 +21,7 @@ if (URI::QUERY_ANY('class') === 'proposition') {
             $userId = URI::QUERY_ANY('userId');
             $rangeX = URI::QUERY_ANY('rangeX');
             $rangeY = URI::QUERY_ANY('rangeY');
-            echo json_encode(Proposition::GET_PROPOSITIONS_USER($userId,$rangeX,$rangeY));
+            echo json_encode(Proposition::GET_PROPOSITIONS_USER($userId, $rangeX, $rangeY));
             break;
         case "proposition_get":
             $propositionId = filter_input($input, 'propostion_id', FILTER_SANITIZE_STRING);
@@ -79,7 +79,7 @@ SQL;
         if ($rangeX !== null) {
             $LIMIT = "Limit $rangeX";
             if ($rangeY !== null) {
-            $LIMIT .= ", $rangeY";    
+                $LIMIT .= ", $rangeY";
             }
         }
         $sql = <<<SQL

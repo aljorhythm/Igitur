@@ -1,8 +1,8 @@
 <?php
 
-include_once 'DB.php';
-include_once 'UAC.php';
-include_once 'Utilities.php';
+include_once __DIR__.'/DB.php';
+include_once __DIR__.'/UAC.php';
+include_once __DIR__.'/Utilities.php';
 
 //debugging 
 error_reporting(E_ALL);
