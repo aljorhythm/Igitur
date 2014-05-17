@@ -69,9 +69,12 @@ SQL;
 SQL;
         $db = (new DbController())->doConnect();
         $result = $db->query($sql);
-        if (($row = mysqli_fetch_array($result)) !== false) {
-            return $row;
-        }
+        if ($result !== false) {
+            $row = $result->fetch_assoc();
+            if ($row !== null) { 
+                return $row;
+            }
+        } return false;
     }
 
     public static function GET_PROPOSITIONS_USER($userId, $rangeX = null, $rangeY = null) {

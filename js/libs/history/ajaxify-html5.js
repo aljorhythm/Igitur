@@ -27,10 +27,9 @@ var Ajaxify;
                 contentNode = $content.get(0),
                 $menu = $('#side-nav').filter(':first'),
                 activeClass = 'youarehere',
-                activeSelector = 'youarehere',
                 //activeClass = 'active selected current youarehere',
                 //activeSelector = '.active,.selected,.current,.youarehere',
-                menuChildrenSelector = ' #side-nav-nav ul, #side-nav-nav li',
+                menuChildrenSelector = ' #side-nav-nav li',
                 completedEventName = 'statechangecomplete',
                 /* Application Generic Variables */
                 $window = $(window),
@@ -107,22 +106,23 @@ var Ajaxify;
             var
                     State = History.getState(),
                     url = State.url,
-                    relativeUrl = url.replace(rootUrl, '');
-
+                    relativeUrl = url.replace(rootUrl, ''), uac = State.data.uac;
             // Set Loading
             $body.addClass('loading');
 
             // Start Fade Out
             // Animating to opacity to 0 still keeps the element's height intact
-            // Which prevents that annoying pop bang issue when loading in new content
-
-            $content.animate({opacity: 0}, {duration: Ajaxify.FadeDuration, complete: function() {
-                    if (typeof (Ajaxify.Callback) === 'function') {
-                        Ajaxify.Callback();
-                        Ajaxify.Callback = null;
-                    }
-                }});
-
+            // Which prevents that annoying pop bang issue when loading in new content 
+            if (uac) {
+                Ajaxify.Callback = true;
+            } else {
+                $content.animate({opacity: 0}, {duration: Ajaxify.FadeDuration, complete: function() {
+                        if (typeof (Ajaxify.Callback) === 'function') {
+                            Ajaxify.Callback();
+                            Ajaxify.Callback = null;
+                        }
+                    }});
+            }
             function AfterRequest(data) {
 
                 // Prepare
@@ -141,15 +141,24 @@ var Ajaxify;
 
                 // Update the menu
                 $menuChildren = $menu.find(menuChildrenSelector);
-                $menuChildren.filter(activeSelector).removeClass(activeClass);
-                $menuChildren = $menuChildren.has('a[href^="' + relativeUrl + '"],a[href^="/' + relativeUrl + '"],a[href^="' + url + '"]');
-                if ($menuChildren.length === 1) {
-                    $menuChildren.addClass(activeClass);
+                $('.'+activeClass).removeClass(activeClass);
+                $activeMenu = $menuChildren.find('a[href^="' + relativeUrl + '"],a[href^="/' + relativeUrl + '"],a[href^="' + url + '"]'); 
+                $activeMenu.addClass(activeClass);
+
+
+                var loggedIn = $dataBody.find("#ui-data").data('loggedin');
+                function updateContent() {
+                    $content.html(contentHtml).ajaxify().animate({'opacity': '100'}, {duration: Ajaxify.FadeDuration});
                 }
-
-                // Update the content 
-                $content.html(contentHtml).ajaxify().animate({'opacity': '100'}, {duration: Ajaxify.FadeDuration}); /* you could fade in here if you'd like */
-
+                if (uac) {
+                    if (typeof $dataBody.find("#ui-main-data").data('requirerefresh') !== 'undefined' || typeof $("#ui-main-data").data('requirerefresh') !== 'undefined') {
+                        $content.animate({opacity: 0}, {duration: Ajaxify.FadeDuration, complete: function() {
+                                updateContent();
+                            }});
+                    }
+                } else {
+                    updateContent();
+                }
                 // Update the title
                 document.title = $data.find('.document-title:first').text();
                 try {
@@ -158,8 +167,8 @@ var Ajaxify;
                 catch (Exception) {
                 }
 
-                // Refresh nav
-                var shouldRefresh = $dataBody.find("#ui-data").data('loggedin') !== $("#ui-data").data('loggedin');
+                // Refresh after login/logout
+                var shouldRefresh = loggedIn !== $("#ui-data").data('loggedin');
                 if (shouldRefresh) {
                     $("#side-nav #opatable").animate({opacity: '0'}, {queue: false, duration: 600, complete: function() {
                             $("#side-nav #opatable").replaceWith($dataBody.find("#side-nav #opatable")).animate({opacity: '1'}, {duration: 400});
@@ -169,7 +178,6 @@ var Ajaxify;
                     $scripts = $dataBody.find("#side-nav #opatable").find('.document-script');
                     $scripts.each(function() {
                         var parent = this.parentNode, sibling = this.nextSibling;
-
                         var $script = $(this), scriptText = $script.text(), scriptNode = document.createElement('script');
                         $script.detach();
                         if ($script.attr('src')) {
@@ -189,7 +197,6 @@ var Ajaxify;
                 }
                 // Add the scripts (content)
                 $scripts.each(function() {
-                    console.log(contentNode);
                     var $script = $(this), scriptText = $script.text(), scriptNode = document.createElement('script');
                     if ($script.attr('src')) {
                         if (!$script[0].async) {
@@ -202,18 +209,8 @@ var Ajaxify;
                 });
 
                 $body.removeClass('loading');
+
                 $window.trigger(completedEventName);
-
-                // Inform Google Analytics of the change
-                if (typeof window._gaq !== 'undefined') {
-                    window._gaq.push(['_trackPageview', relativeUrl]);
-                }
-
-                // Inform ReInvigorate of a state change
-                if (typeof window.reinvigorate !== 'undefined' && typeof window.reinvigorate.ajax_track !== 'undefined') {
-                    reinvigorate.ajax_track(url);
-                    // ^ we use the full url here as that is what reinvigorate supports
-                }
             }
 
             // Ajax Request the Traditional Page

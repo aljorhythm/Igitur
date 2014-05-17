@@ -1,5 +1,4 @@
-<?php include_once 'libs/UAC.php' ?>
-
+<?php include_once 'libs/UAC.php' ?> 
 <div id="side-nav">  
     <div class='fullWidthMiddle'><a class='igitur-logo' href="" onclick='location.reload()'>Igitur</a></div>
     <div id="opatable"> 
@@ -34,8 +33,7 @@
             </script>
             <div class="fullWidthMiddle"> <span class="a" href="" title="login" onclick="login();">Login</span></div> 
         <?php } ?>
-        <div id='side-nav-nav' style='width:100%;'>
-
+        <div id='side-nav-nav' style='width:100%;'> 
             <ul> 
                 <?php
                 if ($loggedIn) {
@@ -43,7 +41,7 @@
                     ?>
                     <li><a href="profile.php">You</a>
                         <ul>
-                            <li><a href="context.php?id=<?php echo $id; ?>">Context</a></li> 
+                            <li><a href="context.php?id=<?php echo $id; ?>">Contexts</a></li> 
                             <li><a href="definitions.php?id=<?php echo $id; ?>">Definitions</a></li>  
                             <li><a href="propositions.php?id=<?php echo $id; ?>">Propositions</a></li> 
                             <li><a href="settings.php">Settings</a></li>
@@ -59,10 +57,17 @@
                         <li><a href="people.php">People</a></li>
                     </ul>
                 </li>
-                <li><a href="Development">Development
-                        <ul><li><a href="dev-ajax.php">ajax</a></li></ul>
-                        <ul><li><a href="unset.php">session unset</a></li></ul>
+                <li><a href="Development">Development</a>
+                    <ul> <li><a href="dev-ajax.php">ajax</a></li> 
+                        <li><a href="unset.php">session unset</a></li> 
+                    </ul>
+                </li>
+                <li><a href="Development">Admin</a>
+                    <ul> 
+                        <li><a href="UACui.php">uac</a></li>  
+                    </ul>
                 </li>
             </ul> 
-        </div> </div>
+        </div> 
+    </div>
 </div>

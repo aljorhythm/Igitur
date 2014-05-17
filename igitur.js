@@ -1,16 +1,32 @@
 var Igitur = {
     Cache: {
-        logicalConnectives_phrases: [],
-        GetPhrases: function(categoryId, callback) {
-            var logicalConnectives_phrases = Igitur.Cache.logicalConnectives_phrases;
-            if (categoryId in logicalConnectives_phrases) {
-                callback(logicalConnectives_phrases[categoryId]);
-            } else {
-                Igitur.LogicalConnective.GetPhrasesFromCategory(categoryId, function(phrases) {
-                    callback(phrases);
-                    logicalConnectives_phrases[categoryId] = phrases;
-                });
-            }
+        Init: function() {  
+            Igitur.Cache.CacheManagerCallback.prototype.requestCallback = function(value) {
+                console.log(this);
+                this.callback(value);
+                this.cacheManager.cache[this.key] = value;
+            };
+            console.log(Igitur.Cache.CacheManagerCallback.prototype);
+            Igitur.Cache.CacheManager.prototype.get = function(key, callback) {
+                if (key in this.cache) {
+                    callback(this.cache[key]);
+                } else {   
+                    var callbackObject = new Igitur.Cache.CacheManagerCallback(callback, this, key); 
+                    this.request(key, callbackObject.requestCallback);
+                }
+            };
+            Igitur.Cache.Init = function() {
+            };
+        },
+        CacheManager: function(request) {
+            Igitur.Cache.Init();
+            this.cache = [];
+            //request: function(id,callback)
+            this.request = request;
+        }, CacheManagerCallback: function(callback, cacheManager, key) { 
+            this.callback = callback;
+            this.cacheManager = cacheManager;
+            this.key = key;
         }
     },
     Util: {
@@ -98,6 +114,10 @@ Igitur.LogicalConnective = {
     }, GetSymbolsFromCategory: function(categoryId, callback) {
         return Igitur.Util.GET_AJAX_JSON(Igitur.Util.URL_LOGICAL_CONNECTIVE + "?type=json&request=category_symbols&category_id=" + categoryId, callback);
     }
+};
+Igitur.LogicalConnective.Cache = {
+    Phrases: new Igitur.Cache.CacheManager(Igitur.LogicalConnective.GetPhrasesFromCategory),
+    Symbols: new Igitur.Cache.CacheManager(Igitur.LogicalConnective.GetSymbolsFromCategory)
 };
 Igitur.Proposition = {
     GetProposition: function(propositionId, callback) {

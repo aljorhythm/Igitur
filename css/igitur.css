@@ -51,6 +51,13 @@ a.submit:hover{
     color:#FE7276;
     cursor:pointer;
 } 
+#main-container a.alt, #main-container .a.alt{
+    color:black;
+} 
+#main-container a.alt:hover, #main-container .a.alt:hover{
+    color:#FE7276;
+    cursor:pointer;
+} 
 .upperCaseOnHover:hover{
     text-transform: uppercase;  
 }

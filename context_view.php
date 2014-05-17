@@ -1,11 +1,9 @@
 <?php
-include 'UAC.php';
+include 'libs/UAC.php';
 //debugging 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-?>
-<?php
-include 'Context.php';
+include 'libs/Context.php';
 $editId = URI::QUERY_ANY('id', '');
 if ($editId !== '') {
     $context = Context::GetContext($editId);
@@ -26,7 +24,7 @@ if ($editId !== '') {
         <div id='main-container'> 
             <?php if ($context !== null) { ?>
                 <?php if ($editable) { ?> 
-                    <script> 
+                    <script>
                         var contextId = <?php echo $context['idContext'] ?>;
                         var UI = {
                             Description: {
@@ -104,10 +102,11 @@ if ($editId !== '') {
             if ($context === null) {
                 echo "Context not found";
             } else {
-                echo "<h3>{$context['contextName']}</h3>";
+
                 include 'libs/Users.php';
                 $owner = Users::GetUsername($context['ownerId']);
-                echo "<h5>by <a href='profile.php?id={$context['ownerId']}'>$owner</a></h5>";
+                echo "<a href='profile.php?id={$context['ownerId']}'>$owner</a> > <a class='alt' href='context.php?id={$context['ownerId']}'>contexts</a>";
+                echo "<h3>{$context['contextName']}</h3>";
                 ?>
                 <div id="description">
                     <?php echo "<span class='h4'>Description</span>"; ?>

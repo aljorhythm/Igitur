@@ -44,14 +44,14 @@ if ($userId === '') {
                                     UI.Forms.FormAddProposition.PreviewLCSuffix = $("#formAddProposition #previewLC-suffix");
                                     $("#formAddProposition select").on('change', function() {
                                         var categoryId = this.value;
-                                        Igitur.Cache.GetPhrases(categoryId, function(phrases) {
+                                        Igitur.LogicalConnective.Cache.Phrases.get(categoryId, function(phrases) {
                                             UI.Forms.FormAddProposition.PreviewLCPrefix.data('phrase', 0);
                                             UI.Forms.FormAddProposition.PreviewPhrase(phrases[0]);
                                         });
                                     }).trigger('change');
                                     $("#formAddProposition .previewLC").on('click', function() {
                                         var categoryId = $("#formAddProposition select#categoryId").val();
-                                        Igitur.Cache.GetPhrases(categoryId, function(phrases) {
+                                        Igitur.LogicalConnective.Cache.Phrases.get(categoryId, function(phrases) {
                                             var nextPhraseIndex = UI.Forms.FormAddProposition.PreviewLCPrefix.data('phrase') + 1;
                                             if (nextPhraseIndex >= phrases.length) {
                                                 nextPhraseIndex = 0;
