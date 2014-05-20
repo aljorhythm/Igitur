@@ -18,19 +18,23 @@
                 <span class="a" onclick="logout();">logout</span>
             </div>
         <?php } else { ?>
-            <script src='js/modalLogin/modalLogin.js'></script>
-            <script>
+            <script >
+                $.getScript('js/modalLogin/modalLogin.js', function() {
                     ModalLogin.Close = function() {
                         ModalLogin.Hide(400);
                     };
                     ModalLogin.Success = function() {
-                        ModalLogin.Destroy();
-                        History.replaceState({date: Date.now(), uac: true}, "State", location.href);
-                    };
-                    function login() {
-                        ModalLogin.Display(400);
-                    }
+                        ModalLogin.Destroy(400, function() {
+                            History.replaceState({date: Date.now(), uac: true}, "State", location.href);
+                        });
+                    }; 
+                });
+
+                function login() {
+                    ModalLogin.Display(400);
+                }
             </script>
+            <script src='' onload='EditModalLogin();'></script> 
             <div class="fullWidthMiddle"> <span class="a" href="" title="login" onclick="login();">Login</span></div> 
         <?php } ?>
         <div id='side-nav-nav' style='width:100%;'> 

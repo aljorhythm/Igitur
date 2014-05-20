@@ -1,4 +1,4 @@
-//modal Login z-index: 9 * (10**6)
+//modal Login z-index: 9 * (10**6) 
 var ModalLogin = {
     //default success is refresh
     //default failure is alert
@@ -60,25 +60,35 @@ var ModalLogin = {
         ModalLogin.username = $("<input>").attr('id', 'username').appendTo(container);
 
         container.append('<br>Password: ');
-        ModalLogin.password = $("<input>").attr({'type': 'password', id: 'password'}).appendTo(container);
+        ModalLogin.password = $("<input>").attr({'type': 'password', id: 'password'}).keyup(function(event) {
+            if (event.keyCode === 13) {
+                ModalLogin.submit.click();
+            }
+            return false;
+        }).appendTo(container);
         container.append('<br>');
-        var submit = $("<button>").html('Login').on('click', function() {
+        ModalLogin.submit = $("<button>").html('Login').on('click', function(e) {
+            console.log('here'); 
             Igitur.UAC.Login(ModalLogin.username[0].value, ModalLogin.password[0].value, function(d) {
+                console.log(d); 
                 if (d === true) {
                     ModalLogin.Success();
                 } else {
                     ModalLogin.Failure();
                 }
             });
+            e.preventDefault();
+            return false;
         }).appendTo(container);
-        
-        ModalLogin.Display = function(duration, callback) { 
-            if (typeof (duration) !== 'undefined') { 
+
+        ModalLogin.Display = function(duration, callback) {
+            if (typeof (duration) !== 'undefined') {
                 modal.fadeIn(duration, callback);
             }
             else {
                 modal.show();
             }
+            modal.find('#username').focus();
         };
         ModalLogin.Hide = function(duration, callback) {
             if (typeof (duration) !== 'undefined') {
@@ -87,16 +97,18 @@ var ModalLogin = {
             else {
                 modal.hide();
             }
-        }; 
+        };
         ModalLogin.Hide();
-        $('body').append(modal); 
+        $('body').append(modal);
         ModalLogin.Display(duration, callback);
         ModalLogin.JqueryObject = function() {
             return modal;
         };
-        ModalLogin.Destroy = function() {
-            ModalLogin.Hide(function() {
+        ModalLogin.Destroy = function(duration, callback) {
+            ModalLogin.Hide(duration, function() {
                 modal.remove();
+                callback();
             });
         };
     }};
+ 

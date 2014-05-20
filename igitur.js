@@ -1,18 +1,18 @@
 var Igitur = {
     Cache: {
-        Init: function() {  
+        Init: function() {
             Igitur.Cache.CacheManagerCallback.prototype.requestCallback = function(value) {
-                console.log(this);
                 this.callback(value);
                 this.cacheManager.cache[this.key] = value;
-            };
-            console.log(Igitur.Cache.CacheManagerCallback.prototype);
+            }; 
             Igitur.Cache.CacheManager.prototype.get = function(key, callback) {
                 if (key in this.cache) {
                     callback(this.cache[key]);
-                } else {   
-                    var callbackObject = new Igitur.Cache.CacheManagerCallback(callback, this, key); 
-                    this.request(key, callbackObject.requestCallback);
+                } else {
+                    var callbackObject = new Igitur.Cache.CacheManagerCallback(callback, this, key);
+                    this.request(key, function(data) {
+                        callbackObject.requestCallback(data);
+                    });
                 }
             };
             Igitur.Cache.Init = function() {
@@ -23,7 +23,7 @@ var Igitur = {
             this.cache = [];
             //request: function(id,callback)
             this.request = request;
-        }, CacheManagerCallback: function(callback, cacheManager, key) { 
+        }, CacheManagerCallback: function(callback, cacheManager, key) {
             this.callback = callback;
             this.cacheManager = cacheManager;
             this.key = key;

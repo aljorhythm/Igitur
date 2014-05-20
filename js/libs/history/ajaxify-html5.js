@@ -2,6 +2,7 @@
 // v1.0.1 - 30 September, 2012
 // https://github.com/browserstate/ajaxify
 var Ajaxify;
+
 (function(window, undefined) {
 
     // Prepare our Variables
@@ -112,19 +113,18 @@ var Ajaxify;
 
             // Start Fade Out
             // Animating to opacity to 0 still keeps the element's height intact
-            // Which prevents that annoying pop bang issue when loading in new content 
+            // Which prevents that annoying pop bang issue when loading in new content  
             if (uac) {
                 Ajaxify.Callback = true;
             } else {
                 $content.animate({opacity: 0}, {duration: Ajaxify.FadeDuration, complete: function() {
-                        if (typeof (Ajaxify.Callback) === 'function') {
+                        if (typeof Ajaxify.Callback === 'function') {
                             Ajaxify.Callback();
                             Ajaxify.Callback = null;
                         }
                     }});
             }
             function AfterRequest(data) {
-
                 // Prepare
                 var
                         $data = $(documentHtml(data)),
@@ -141,17 +141,16 @@ var Ajaxify;
 
                 // Update the menu
                 $menuChildren = $menu.find(menuChildrenSelector);
-                $('.'+activeClass).removeClass(activeClass);
-                $activeMenu = $menuChildren.find('a[href^="' + relativeUrl + '"],a[href^="/' + relativeUrl + '"],a[href^="' + url + '"]'); 
+                $('.' + activeClass).removeClass(activeClass);
+                $activeMenu = $menuChildren.find('a[href^="' + relativeUrl + '"],a[href^="/' + relativeUrl + '"],a[href^="' + url + '"]');
                 $activeMenu.addClass(activeClass);
 
-
-                var loggedIn = $dataBody.find("#ui-data").data('loggedin');
                 function updateContent() {
                     $content.html(contentHtml).ajaxify().animate({'opacity': '100'}, {duration: Ajaxify.FadeDuration});
                 }
                 if (uac) {
                     if (typeof $dataBody.find("#ui-main-data").data('requirerefresh') !== 'undefined' || typeof $("#ui-main-data").data('requirerefresh') !== 'undefined') {
+
                         $content.animate({opacity: 0}, {duration: Ajaxify.FadeDuration, complete: function() {
                                 updateContent();
                             }});
@@ -167,28 +166,28 @@ var Ajaxify;
                 catch (Exception) {
                 }
 
-                // Refresh after login/logout
+                // Refresh after login/logout (nav)
+                // checked using data sent by server
+                var loggedIn = $dataBody.find("#ui-data").data('loggedin');
                 var shouldRefresh = loggedIn !== $("#ui-data").data('loggedin');
                 if (shouldRefresh) {
                     $("#side-nav #opatable").animate({opacity: '0'}, {queue: false, duration: 600, complete: function() {
-                            $("#side-nav #opatable").replaceWith($dataBody.find("#side-nav #opatable")).animate({opacity: '1'}, {duration: 400});
-                        }});
+                            $("#side-nav #opatable").replaceWith($dataBody.find("#side-nav #opatable"));
+                            $("#side-nav #opatable").animate({opacity: '1'}, {duration: 400}).ajaxify().find('.document-script').each(function() {
 
-                    //fetch scripts (nav)
-                    $scripts = $dataBody.find("#side-nav #opatable").find('.document-script');
-                    $scripts.each(function() {
-                        var parent = this.parentNode, sibling = this.nextSibling;
-                        var $script = $(this), scriptText = $script.text(), scriptNode = document.createElement('script');
-                        $script.detach();
-                        if ($script.attr('src')) {
-                            if (!$script[0].async) {
-                                scriptNode.async = false;
-                            }
-                            scriptNode.src = $script.attr('src');
-                        }
-                        scriptNode.appendChild(document.createTextNode(scriptText));
-                        parent.insertBefore(scriptNode, sibling);
-                    });
+                                var parent = this.parentNode, sibling = this.nextSibling;
+                                var $script = $(this), scriptText = $script.text(), scriptNode = document.createElement('script');
+                                $script.detach();
+                                if ($script.attr('src')) {
+                                    if (!$script[0].async) {
+                                        scriptNode.async = false;
+                                    }
+                                    scriptNode.src = $script.attr('src');
+                                }
+                                scriptNode.appendChild(document.createTextNode(scriptText));
+                                parent.insertBefore(scriptNode, sibling);
+                            });
+                        }});
                 }
                 // Fetch the scripts (content)
                 $scripts = $content.find('.document-script');
@@ -211,6 +210,8 @@ var Ajaxify;
                 $body.removeClass('loading');
 
                 $window.trigger(completedEventName);
+
+                Ajaxify.Callback = null;
             }
 
             // Ajax Request the Traditional Page

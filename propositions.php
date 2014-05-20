@@ -82,7 +82,7 @@ if ($userId === '') {
                 <form id="formAddProposition" method="POST" action="Proposition.php">
                     <input type="hidden" name="class" value="proposition"/>
                     <input type="hidden" name="request" value="proposition_add"/>  
-                    <input type="text" name="p" placeholder="  p" class="previewText"/>
+                    <input type="textarea" rows='1' name="p" placeholder="  p" class="previewText"/>
                     <select id="categoryId" name="logicalConnective_categoryId">
                         <?php
                         include_once 'libs/LogicalConnective.php';
@@ -92,7 +92,9 @@ if ($userId === '') {
                         }
                         ?>
                     </select>
-                    <input type="text" name="q" placeholder="  q" class="previewText"/>
+                    <div rows='1' name="q" placeholder="  q" class="previewText" contenteditable> 
+                                
+                    </div>
                     <input style='font-size:large' type="submit" value="Add"/> <br> 
                     <div id="preview">
                         <h5>Preview</h5>
